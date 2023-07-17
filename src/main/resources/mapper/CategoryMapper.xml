@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qh.reigi.dao.mapper.CategoryMapper">
+    <insert id="insertCategory">
+        insert into category (name, type, sort, create_time, update_time, create_user, update_user)
+        values (#{category.name}, #{category.type}, #{category.sort}, #{category.createTime},
+        #{category.updateTime}, #{category.createUser}, #{category.updateUser})
+    </insert>
+    <update id="updateCategory">
+        update category
+        set name = #{category.name}, sort = #{category.sort}
+        where id = #{category.id}
+
+    </update>
+    <delete id="deleteCategoryById">
+        delete from category where id = #{id}
+    </delete>
+    <select id="sortIsExisted" resultType="integer">
+        select sort from category
+                    where sort = ${sort} limit 1
+    </select>
+    <select id="getCategoryList" resultType="java.util.Map">
+        select id, name from category where type = #{type}
+    </select>
+</mapper>
