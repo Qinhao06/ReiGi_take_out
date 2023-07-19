@@ -25,5 +25,21 @@
         select id from setmeal
         where name = #{setmeal.name} and create_user = #{setmeal.createUser}
     </select>
+    <select id="getSetMealListByCategoryId" resultType="com.qh.reigi.entity.Setmeal">
+        select * from setmeal
+        where category_id = #{categoryId}
+
+    </select>
+    <select id="getSetMealListByCategoryIdAndStatus" resultType="com.qh.reigi.dto.SetmealDto">
+        select * from setmeal
+        where category_id = #{categoryId} and status = #{status}
+    </select>
+    <select id="getSetMealByName" resultType="com.qh.reigi.dto.SetmealDto">
+        select * from setmeal
+        where name = #{name} limit 1
+    </select>
+    <select id="getSetMealDish" resultType="com.qh.reigi.entity.SetmealDish">
+        select * from setmeal_dish where setmeal_id = #{id}
+    </select>
 
 </mapper>

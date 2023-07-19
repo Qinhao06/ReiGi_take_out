@@ -8,13 +8,14 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 
 import java.io.IOException;
 
 import static org.apache.logging.log4j.message.MapMessage.MapFormat.JSON;
 
-
+@Slf4j
 @WebFilter(filterName = "LoginFilter",urlPatterns = "/*")
 public class LoginFilter implements Filter {
 
@@ -25,14 +26,17 @@ public class LoginFilter implements Filter {
 
         HttpServletRequest  request = (HttpServletRequest) servletRequest;
         HttpServletResponse  response = (HttpServletResponse) servletResponse;
-        System.out.println(request.getRequestURI());
+
         String uri = request.getRequestURI();
+        log.info(uri);
 
         String[] urls = new String[]{
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
                 "/front/**",
+                "/user/login",
+                "/user/sendMsg"
         };
         if(check_url(urls, uri)){
             filterChain.doFilter(servletRequest, servletResponse);
@@ -42,6 +46,11 @@ public class LoginFilter implements Filter {
         HttpSession session = request.getSession();
 
         if(session.getAttribute("employee") != null){
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        if(session.getAttribute("user") != null){
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }

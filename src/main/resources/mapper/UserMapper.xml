@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qh.reigi.dao.mapper.UserMapper">
+    <insert id="register">
+        insert into user  (phone, status, password)
+        values (#{user.phone}, #{user.status}, #{user.password})
+    </insert>
+    <select id="checkUserIsExist" resultType="com.qh.reigi.entity.User">
+        select * from user
+                 where phone = #{phone} limit 1
+    </select>
+    <select id="getUserId" resultType="java.lang.Long">
+        select id from user where phone = #{phone}
+    </select>
+</mapper>

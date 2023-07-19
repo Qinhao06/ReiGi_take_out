@@ -17,4 +17,6 @@ public interface CategoryService {
     R<String> addCategory(HttpServletRequest request, Category category);
 
     List<Map<String, Object>> listCategory(Integer type);
+
+    List<Category> listCategoryAll();
 }

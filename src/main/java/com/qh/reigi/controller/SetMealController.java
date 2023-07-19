@@ -4,7 +4,9 @@ package com.qh.reigi.controller;
 import com.github.pagehelper.PageInfo;
 import com.qh.reigi.common.R;
 import com.qh.reigi.dao.mapper.SetMealMapper;
+import com.qh.reigi.dto.DishDto;
 import com.qh.reigi.dto.SetmealDto;
+import com.qh.reigi.entity.Dish;
 import com.qh.reigi.service.SetMealService;
 import com.qh.reigi.service.PageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -51,5 +54,14 @@ public class SetMealController {
         return setMealService.deleteSetMeal(request, idList);
     }
 
+    @GetMapping("/list")
+    public R<List<SetmealDto>> list(HttpServletRequest request, @RequestParam("categoryId") Long categoryId, Integer status){
+        return setMealService.getSetMealListByCategoryIdAndStatus(request, categoryId, status);
+    }
+
+    @GetMapping("/dish/{id}")
+    public R<List<DishDto>> dish(@PathVariable(value = "id") Long id){
+        return setMealService.getDishListBySetMealId(id);
+    }
 
 }

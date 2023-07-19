@@ -5,6 +5,7 @@ import com.qh.reigi.common.R;
 import com.qh.reigi.dao.mapper.DishMapper;
 import com.qh.reigi.dto.DishDto;
 import com.qh.reigi.entity.Dish;
+import com.qh.reigi.entity.DishFlavor;
 import com.qh.reigi.entity.Employee;
 import com.qh.reigi.service.PageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.qh.reigi.common.Constant.*;
 
@@ -38,7 +41,7 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
         dishDto.setSort(INITIAL_DISH_SORT);
         dishDto.setIsDeleted(INITIAL_DELETE);
         dishMapper.insertDish(dishDto);
-        Long dishId = dishMapper.getDishId(dishDto);
+        Long dishId = dishDto.getId();
         if (dishId == null)return R.error("填加失败");
         dishDto.setId(dishId);
         dishDto.getFlavors().forEach(flavor -> {
@@ -52,6 +55,11 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
         });
 
         return R.success("菜品填加成功");
+    }
+
+    @Override
+    public DishDto getDishById(Long id) {
+        return dishMapper.getDishById(id);
     }
 
     @Override
@@ -78,7 +86,14 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
     }
 
     @Override
-    public R<List<Dish>> getDishListByCategoryId(HttpServletRequest request, Long categoryId) {
-        return R.success(dishMapper.getDishListByCategoryId(categoryId));
+    public R<List<DishDto>> getDishListByCategoryId(HttpServletRequest request, Long categoryId, Integer status ){
+        List<DishDto> dishes = status == null ?
+                dishMapper.getDishListByCategoryId(categoryId) :
+                dishMapper.getDishListByCategoryIdAndStatus(categoryId, status);
+        dishes.forEach(dish -> {
+            List<DishFlavor> flavors = dishMapper.getDishFlavor(dish.getId());
+            dish.setFlavors(flavors);
+        });
+        return R.success(dishes);
     }
 }

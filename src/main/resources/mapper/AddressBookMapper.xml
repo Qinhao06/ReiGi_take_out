@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qh.reigi.dao.mapper.AddressBookMapper">
+    <insert id="addAddressBook">
+        insert into address_book ( user_id, consignee, sex, phone, detail, label, is_default, create_time, update_time, create_user, update_user)
+        values (#{addressBook.userId}, #{addressBook.consignee}, #{addressBook.sex}, #{addressBook.phone}, #{addressBook.detail}, #{addressBook.label}, #{addressBook.isDefault}, #{addressBook.createTime}
+               , #{addressBook.updateTime}, #{addressBook.createUser}, #{addressBook.updateUser})
+    </insert>
+    <update id="changeDefaultAddress">
+        update address_book set is_default = #{isDefault} where id = #{id}
+    </update>
+    <update id="editAddressBook">
+        update address_book set consignee = #{addressBook.consignee}, update_time = #{addressBook.updateTime}, label = #{addressBook.label}, sex = #{addressBook.sex}, phone = #{addressBook.phone},
+        detail = #{addressBook.detail} where id = #{addressBook.id}
+    </update>
+    <delete id="deleteAddressBook">
+        delete from address_book where id = #{id}
+    </delete>
+    <select id="getAddressBookList" resultType="com.qh.reigi.entity.AddressBook">
+        select * from address_book where user_id = #{id} order by is_default desc, update_time
+    </select>
+    <select id="getDefaultAddress" resultType="com.qh.reigi.entity.AddressBook">
+        select * from address_book where user_id = #{id} and is_default = 1 limit 1
+    </select>
+    <select id="getAddressBookById" resultType="com.qh.reigi.entity.AddressBook">
+        select * from address_book where id = #{id} limit 1
+    </select>
+</mapper>

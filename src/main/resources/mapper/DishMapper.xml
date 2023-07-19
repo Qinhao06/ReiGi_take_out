@@ -5,7 +5,7 @@
         insert into dish_flavor (dish_id,  name, value,  create_time,  update_time,  create_user,  update_user,  is_deleted)
         values (#{dishFlavor.dishId}, #{dishFlavor.name}, #{dishFlavor.value}, #{dishFlavor.createTime}, #{dishFlavor.updateTime}, #{dishFlavor.createUser}, #{dishFlavor.updateUser}, #{dishFlavor.isDeleted})
     </insert>
-    <insert id="insertDish">
+    <insert id="insertDish" useGeneratedKeys="true" keyProperty="id">
         insert into dish
             ( name,  category_id,  price,  code,  image, description,status,  sort,  create_time,  update_time,  create_user,  update_user, is_deleted)
         values (#{dish.name}, #{dish.categoryId}, #{dish.price}, #{dish.code}, #{dish.image}, #{dish.description}, #{dish.status}, #{dish.sort}, #{dish.createTime}, #{dish.updateTime}, #{dish.createUser}, #{dish.updateUser}, #{dish.isDeleted})
@@ -22,11 +22,27 @@
 
     <select id="getDishId" resultType="java.lang.Long">
         select id from dish
-        where name = #{dish.name} and create_user = #{dish.createUser}
+        where name = #{dish.name}
+          and create_user = #{dish.createUser}
     </select>
-    <select id="getDishListByCategoryId" resultType="java.util.Map">
-        select * from dish where category_id = #{categoryId}
+    <select id="getDishListByCategoryId" resultType="com.qh.reigi.dto.DishDto">
+        select * from dish
+                 where category_id = #{categoryId}
 
+    </select>
+    <select id="getDishListByCategoryIdAndStatus" resultType="com.qh.reigi.dto.DishDto">
+        select * from dish
+                 where category_id = #{categoryId} and status = #{status}
+    </select>
+    <select id="getDishByName" resultType="com.qh.reigi.dto.DishDto">
+        select * from dish
+                 where name = #{name} limit 1
+    </select>
+    <select id="getDishFlavor" resultType="com.qh.reigi.entity.DishFlavor">
+        select * from dish_flavor where dish_id = #{id}
+    </select>
+    <select id="getDishById" resultType="com.qh.reigi.dto.DishDto">
+        select * from dish where id = #{id} limit 1
     </select>
 
 </mapper>

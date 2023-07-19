@@ -63,4 +63,9 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Map<String, Object>> listCategory(Integer type) {
         return categoryMapper.getCategoryList(type);
     }
+
+    @Override
+    public List<Category> listCategoryAll() {
+        return categoryMapper.getCategoryListAll();
+    }
 }

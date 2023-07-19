@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -54,7 +53,7 @@ public class DishController {
     }
 
     @GetMapping("/list")
-    public R<List<Dish>> list(HttpServletRequest request, @RequestParam("categoryId") Long categoryId){
-        return dishService.getDishListByCategoryId(request, categoryId);
+    public R<List<DishDto>> list(HttpServletRequest request, @RequestParam("categoryId") Long categoryId, Integer status){
+        return dishService.getDishListByCategoryId(request, categoryId, status);
     }
 }

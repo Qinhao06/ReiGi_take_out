@@ -13,6 +13,8 @@ public interface DishService {
 
     R<String> addDish(HttpServletRequest request, DishDto dishDto);
 
+    DishDto getDishById(Long id);
+
 
     R<PageInfo<?>> getDishList(Integer pageNum, Integer pageSize, String name);
 
@@ -20,5 +22,5 @@ public interface DishService {
 
     R<String> deleteDish(HttpServletRequest request, int[] idList);
 
-    R<List<Dish>> getDishListByCategoryId(HttpServletRequest request, Long categoryId);
+    R<List<DishDto>> getDishListByCategoryId(HttpServletRequest request, Long categoryId, Integer status);
 }

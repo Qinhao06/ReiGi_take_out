@@ -20,6 +20,8 @@ public class Constant {
 
     public static final int DEFAULT_COPIES = 1;
 
+    public static final int WAIT_TO_PAY = 1;
+
 
 
 }

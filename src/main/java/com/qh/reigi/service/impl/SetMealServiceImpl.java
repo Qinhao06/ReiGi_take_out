@@ -1,12 +1,15 @@
 package com.qh.reigi.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.qh.reigi.common.R;
+import com.qh.reigi.dao.mapper.DishMapper;
 import com.qh.reigi.dao.mapper.SetMealMapper;
+import com.qh.reigi.dto.DishDto;
 import com.qh.reigi.dto.SetmealDto;
+import com.qh.reigi.entity.Dish;
 import com.qh.reigi.entity.Employee;
 import com.qh.reigi.entity.SetmealDish;
+import com.qh.reigi.service.DishService;
 import com.qh.reigi.service.PageService;
 import com.qh.reigi.service.SetMealService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.qh.reigi.common.Constant.*;
@@ -27,6 +30,9 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Autowired
     SetMealMapper setMealMapper;
+
+    @Autowired
+    DishService dishService;
 
 
     @Override
@@ -76,5 +82,27 @@ public class SetMealServiceImpl implements SetMealService {
             setMealMapper.deleteSetMeal(id, DEFAULT_IS_DELETE);
         }
         return R.success("菜品删除成功");
+    }
+
+    @Override
+    public R<List<SetmealDto>> getSetMealListByCategoryIdAndStatus(HttpServletRequest request, Long categoryId, Integer status) {
+        List<SetmealDto> setMealListByCategoryIdAndStatus = setMealMapper.getSetMealListByCategoryIdAndStatus(categoryId, status);
+        /*setMealListByCategoryIdAndStatus.forEach(setmealDto -> {
+           List<SetmealDish> dishList =  setMealMapper.getSetMealDish(setmealDto.getId());
+           setmealDto.setSetmealDishes(dishList);
+        });*/
+        return R.success(setMealListByCategoryIdAndStatus);
+    }
+
+    @Override
+    public R<List<DishDto>> getDishListBySetMealId(Long id) {
+        List<SetmealDish> setMealDish = setMealMapper.getSetMealDish(id);
+        List<DishDto> dishList = new ArrayList<>();
+        setMealDish.forEach(setmealDish -> {
+            DishDto dishById = dishService.getDishById(setmealDish.getDishId());
+            dishById.setCopies(setmealDish.getCopies());
+            dishList.add(dishById);
+        });
+        return R.success(dishList);
     }
 }

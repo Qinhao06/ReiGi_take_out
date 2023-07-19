@@ -22,4 +22,7 @@
     <select id="getCategoryList" resultType="java.util.Map">
         select id, name from category where type = #{type}
     </select>
+    <select id="getCategoryListAll" resultType="com.qh.reigi.entity.Category">
+        select * from category
+    </select>
 </mapper>

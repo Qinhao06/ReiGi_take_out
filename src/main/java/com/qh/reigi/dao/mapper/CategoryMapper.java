@@ -22,6 +22,5 @@ public interface CategoryMapper {
 
     List<Map<String,Object>> getCategoryList(@Param("type") Integer type);
 
-
-
+    List<Category> getCategoryListAll();
 }

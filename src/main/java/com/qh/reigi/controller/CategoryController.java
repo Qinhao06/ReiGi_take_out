@@ -52,5 +52,9 @@ public class CategoryController {
         return R.success(categoryService.listCategory(type));
     }
 
+    @GetMapping("/list/all")
+    public R<List<Category>> listAll(){
+        return R.success(categoryService.listCategoryAll());
+    }
 
 }
