@@ -43,6 +43,6 @@ public class OrderController {
     public R<String> update(@RequestBody BeanOrderStatus beanOrderStatus){
         orderService.update(beanOrderStatus);
 
-        return R.success("修改成功a");
+        return R.success("修改成功bb");
     }
 }
