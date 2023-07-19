@@ -10,11 +10,8 @@ import com.qh.reigi.entity.*;
 import com.qh.reigi.service.AddressBookService;
 import com.qh.reigi.service.OrderService;
 import com.qh.reigi.service.PageService;
-import com.qh.reigi.service.ShoppingCartService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

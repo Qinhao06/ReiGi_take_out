@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.qh.reigi.common.R;
 import com.qh.reigi.dao.mapper.DishMapper;
 import com.qh.reigi.dto.DishDto;
-import com.qh.reigi.entity.Dish;
 import com.qh.reigi.service.DishService;
 import com.qh.reigi.service.PageService;
 import jakarta.servlet.http.HttpServletRequest;
