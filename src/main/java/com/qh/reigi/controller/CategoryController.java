@@ -4,7 +4,6 @@ package com.qh.reigi.controller;
 import com.github.pagehelper.PageInfo;
 import com.qh.reigi.common.R;
 import com.qh.reigi.entity.Category;
-import com.qh.reigi.entity.Employee;
 import com.qh.reigi.service.CategoryService;
 import com.qh.reigi.service.PageService;
 import jakarta.servlet.http.HttpServletRequest;

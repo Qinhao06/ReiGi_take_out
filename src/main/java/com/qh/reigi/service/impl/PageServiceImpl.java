@@ -2,7 +2,6 @@ package com.qh.reigi.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.qh.reigi.dao.mapper.EmployeeMapper;
 import com.qh.reigi.dao.mapper.PageMapper;
 import com.qh.reigi.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.qh.reigi.common.Constant.DEFAULT_IS_DELETE;
 

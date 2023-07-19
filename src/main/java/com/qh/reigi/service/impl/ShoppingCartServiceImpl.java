@@ -4,8 +4,6 @@ import com.qh.reigi.common.R;
 import com.qh.reigi.dao.mapper.DishMapper;
 import com.qh.reigi.dao.mapper.SetMealMapper;
 import com.qh.reigi.dao.mapper.ShoppingCartMapper;
-import com.qh.reigi.entity.Dish;
-import com.qh.reigi.entity.Setmeal;
 import com.qh.reigi.entity.ShoppingCart;
 import com.qh.reigi.entity.User;
 import com.qh.reigi.service.ShoppingCartService;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
