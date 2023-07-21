@@ -34,7 +34,7 @@ public class OrderController {
                                @RequestParam("page") Integer pageNum, @RequestParam("pageSize") Integer pageSize , Long number, String beginTime, String endTime){
         return R.success(orderService.getAllOrderList(httpServletRequest,pageNum,pageSize, number,  beginTime, endTime));
     }
-
+    /**/
     @PutMapping("/edit")
     public R<String> update(@RequestBody BeanOrderStatus beanOrderStatus){
         orderService.update(beanOrderStatus);
