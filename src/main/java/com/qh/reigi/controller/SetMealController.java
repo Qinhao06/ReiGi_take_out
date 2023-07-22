@@ -11,6 +11,7 @@ import com.qh.reigi.service.SetMealService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -20,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/setmeal")
 public class SetMealController {
+
+
 
     @Autowired
     PageService pageService;
@@ -61,6 +64,11 @@ public class SetMealController {
     @GetMapping("/dish/{id}")
     public R<List<DishDto>> dish(@PathVariable(value = "id") Long id){
         return setMealService.getDishListBySetMealId(id);
+    }
+
+    @GetMapping("/{id}")
+    public R<SetmealDto> getById(@PathVariable(value = "id") Long id){
+        return setMealService.getSetMealById(id);
     }
 
 }

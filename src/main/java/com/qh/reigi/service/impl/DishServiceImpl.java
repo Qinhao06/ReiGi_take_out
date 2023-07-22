@@ -10,6 +10,9 @@ import com.qh.reigi.service.PageService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +26,8 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 @Service
 public class DishServiceImpl implements com.qh.reigi.service.DishService {
 
-
     @Autowired
-    RedisTemplate redisTemplate;
+    CacheManager cacheManager;
 
     @Autowired
     DishMapper dishMapper;
@@ -33,7 +35,7 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
     @Autowired
     PageService pageService;
 
-
+    @CacheEvict(value = "dishCache", key = "'dish_' + #dishDto.categoryId + '_' + #dishDto.status")
     @Override
     public R<String> addDish(HttpServletRequest request, DishDto dishDto) {
         Employee employee = (Employee)request.getSession().getAttribute("employee");
@@ -56,7 +58,6 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
             flavor.setDishId(dishDto.getId());
             dishMapper.insertDishFavor(flavor);
         });
-        redisTemplate.delete("dish_" + dishDto.getCategoryId() + "_" + INITIAL_STATUS);
         return R.success("菜品填加成功");
     }
 
@@ -80,6 +81,7 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
         return R.success("修改菜品状态成功");
     }
 
+    @CacheEvict(value = "dishCache", allEntries = true)
     @Override
     public R<String> deleteDish(HttpServletRequest request, int[] idList) {
         for (int id : idList) {
@@ -88,15 +90,9 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
         return R.success("菜品删除成功");
     }
 
+    @Cacheable(value = "dishCache", key = "'dish_' + #categoryId + '_' + #status")
     @Override
     public R<List<DishDto>> getDishListByCategoryId(HttpServletRequest request, Long categoryId, Integer status ){
-
-        String dishKey = "dish_" + categoryId + "_" + status;
-        List<DishDto> dishList = (List<DishDto>) redisTemplate.opsForValue().get(dishKey);
-        if (dishList != null) {
-            log.info("从redis中获取数据");
-            return R.success(dishList);
-        }
 
         List<DishDto> dishes = status == null ?
                 dishMapper.getDishListByCategoryId(categoryId) :
@@ -105,16 +101,14 @@ public class DishServiceImpl implements com.qh.reigi.service.DishService {
             List<DishFlavor> flavors = dishMapper.getDishFlavor(dish.getId());
             dish.setFlavors(flavors);
         });
-
-        redisTemplate.opsForValue().set(dishKey, dishes, 60, MINUTES);
         return R.success(dishes);
     }
 
+    @CacheEvict(value = "dishCache", key = "'dish_' + #dishDto.categoryId + '_' + #dishDto.status")
     @Override
-    public R<String> editDish(HttpServletRequest request, DishDto dishdto) {
-        dishdto.setUpdateTime(LocalDateTime.now());
-        dishMapper.updateDish(dishdto);
-        redisTemplate.delete("dish_" + dishdto.getCategoryId() + "_" + dishdto.getStatus());
+    public R<String> editDish(HttpServletRequest request, DishDto dishDto) {
+        dishDto.setUpdateTime(LocalDateTime.now());
+        dishMapper.updateDish(dishDto);
         return R.success("修改成功");
 
     }

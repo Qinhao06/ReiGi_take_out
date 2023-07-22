@@ -12,6 +12,9 @@ import com.qh.reigi.service.PageService;
 import com.qh.reigi.service.SetMealService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +26,7 @@ import static com.qh.reigi.common.Constant.*;
 @Service
 public class SetMealServiceImpl implements SetMealService {
 
+
     @Autowired
     PageService pageService;
 
@@ -32,7 +36,7 @@ public class SetMealServiceImpl implements SetMealService {
     @Autowired
     DishService dishService;
 
-
+    @CacheEvict(value = "setMeal", key = "'setMeal_' + #setmealDto.categoryId + '_' + #setmealDto.status")
     @Override
     public R<String> addSetMeal(HttpServletRequest request, SetmealDto setmealDto) {
         Employee employee = (Employee) request.getSession().getAttribute("employee");
@@ -66,6 +70,7 @@ public class SetMealServiceImpl implements SetMealService {
         return R.success(page);
     }
 
+
     @Override
     public R<String> changeStatus(HttpServletRequest request, int[] idList, Integer Status) {
         for (int id : idList) {
@@ -74,6 +79,7 @@ public class SetMealServiceImpl implements SetMealService {
         return R.success("修改菜品状态成功");
     }
 
+    @CacheEvict(value = "setMeal",  allEntries = true)
     @Override
     public R<String> deleteSetMeal(HttpServletRequest request, int[] idList) {
         for (int id : idList) {
@@ -82,16 +88,18 @@ public class SetMealServiceImpl implements SetMealService {
         return R.success("菜品删除成功");
     }
 
+    @Cacheable(value = "setMeal", key = "'setMeal_' + #categoryId + '_' + #status")
     @Override
     public R<List<SetmealDto>> getSetMealListByCategoryIdAndStatus(HttpServletRequest request, Long categoryId, Integer status) {
         List<SetmealDto> setMealListByCategoryIdAndStatus = setMealMapper.getSetMealListByCategoryIdAndStatus(categoryId, status);
-        /*setMealListByCategoryIdAndStatus.forEach(setmealDto -> {
+        setMealListByCategoryIdAndStatus.forEach(setmealDto -> {
            List<SetmealDish> dishList =  setMealMapper.getSetMealDish(setmealDto.getId());
            setmealDto.setSetmealDishes(dishList);
-        });*/
+        });
         return R.success(setMealListByCategoryIdAndStatus);
     }
 
+    @Cacheable(value = "setMeal", key = "'setMealList_' + #id")
     @Override
     public R<List<DishDto>> getDishListBySetMealId(Long id) {
         List<SetmealDish> setMealDish = setMealMapper.getSetMealDish(id);
@@ -102,5 +110,12 @@ public class SetMealServiceImpl implements SetMealService {
             dishList.add(dishById);
         });
         return R.success(dishList);
+    }
+
+    @Override
+    public R<SetmealDto> getSetMealById(Long id) {
+        SetmealDto setMealById = setMealMapper.getSetMealById(id);
+        setMealById.setSetmealDishes(setMealMapper.getSetMealDish(id));
+        return R.success(setMealById);
     }
 }

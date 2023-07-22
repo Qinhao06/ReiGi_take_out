@@ -24,4 +24,6 @@ public interface SetMealService {
     R<List<SetmealDto>> getSetMealListByCategoryIdAndStatus(HttpServletRequest request, Long categoryId, Integer status);
 
     R<List<DishDto>> getDishListBySetMealId(Long id);
+
+    R<SetmealDto> getSetMealById(Long id);
 }

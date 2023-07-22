@@ -32,4 +32,6 @@ public interface SetMealMapper {
     Setmeal getSetMealByName(@Param("name") String name);
 
     List<SetmealDish> getSetMealDish(@Param("id") Long id);
+
+    SetmealDto getSetMealById(@Param("id") Long id);
 }
