@@ -1,6 +1,5 @@
 package com.qh.reigi.dao.mapper;
 
-import com.qh.reigi.common.R;
 import com.qh.reigi.dto.DishDto;
 import com.qh.reigi.entity.Dish;
 import com.qh.reigi.entity.DishFlavor;
