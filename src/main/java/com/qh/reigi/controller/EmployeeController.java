@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-
     @Autowired
     EmployeeService employeeService;
 
@@ -29,17 +28,10 @@ public class EmployeeController {
         return R.success("退出成功");
     }
 
-    /**
-     *
-     * @param request
-     * @param employee
-     * @return
-     */
     @PostMapping("/login")
     public R<Employee> login(HttpServletRequest request,@RequestBody Employee employee) {
         return employeeService.checkLogin(request, employee);
     }
-
 
     @PostMapping("/save")
     public R<String> save(HttpServletRequest request,@RequestBody Employee employee) {
@@ -49,8 +41,6 @@ public class EmployeeController {
         }catch (Exception e){
             return R.error(e.getMessage());
         }
-
-
         return R.success("新增员工异常");
     }
 

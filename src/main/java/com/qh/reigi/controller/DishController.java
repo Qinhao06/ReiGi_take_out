@@ -39,6 +39,11 @@ public class DishController {
         return dishService.addDish(request, dishdto);
     }
 
+    @GetMapping("/{id}")
+    public R<DishDto> getById(@PathVariable("id") Long id){
+        return R.success(dishService.getDishById(id));
+    }
+
     @PostMapping("/status/{Status}")
     public R<String> Status(HttpServletRequest request,@RequestParam("ids") String ids,  @PathVariable(value = "Status") Integer Status){
         int[] idList = Arrays.stream(ids.split(",")).mapToInt(Integer::valueOf).toArray();
@@ -54,5 +59,10 @@ public class DishController {
     @GetMapping("/list")
     public R<List<DishDto>> list(HttpServletRequest request, @RequestParam("categoryId") Long categoryId, Integer status){
         return dishService.getDishListByCategoryId(request, categoryId, status);
+    }
+
+    @PutMapping("/edit")
+    public R<String> edit(HttpServletRequest request, @RequestBody DishDto dishdto){
+        return dishService.editDish(request, dishdto);
     }
 }

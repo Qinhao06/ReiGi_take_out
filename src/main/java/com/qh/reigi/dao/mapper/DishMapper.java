@@ -30,4 +30,6 @@ public interface DishMapper {
     List<DishFlavor> getDishFlavor(@Param("id") Long id);
 
     DishDto getDishById(@Param("id") Long id);
+
+    void updateDish(@Param("dish") DishDto dishdto);
 }

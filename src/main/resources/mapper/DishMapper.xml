@@ -18,6 +18,13 @@
         update dish set is_deleted = #{isDeleted}
         where id = #{id}
     </update>
+    <update id="updateDish">
+        update dish
+        set name = #{dish.name},  category_id = #{dish.categoryId},  price = #{dish.price},  code =  #{dish.code},  image = #{dish.image}, description = #{dish.description}
+          ,status = #{dish.status},  sort = #{dish.sort},  create_time = #{dish.createTime},  update_time =  #{dish.updateTime},  create_user = #{dish.createUser},  update_user = #{dish.updateUser}
+          , is_deleted = #{dish.isDeleted}
+        where id = #{dish.id}
+    </update>
 
 
     <select id="getDishId" resultType="java.lang.Long">

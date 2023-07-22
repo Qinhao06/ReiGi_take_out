@@ -23,4 +23,6 @@ public interface DishService {
     R<String> deleteDish(HttpServletRequest request, int[] idList);
 
     R<List<DishDto>> getDishListByCategoryId(HttpServletRequest request, Long categoryId, Integer status);
+
+    R<String> editDish(HttpServletRequest request, DishDto dishdto);
 }

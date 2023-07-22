@@ -18,7 +18,6 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-
     @GetMapping("/userPage")
     public R<PageInfo<?>> userPage(HttpServletRequest httpServletRequest ,@RequestParam("page") Integer pageNum, @RequestParam("pageSize") Integer pageSize){
         return R.success(orderService.getOrderList(httpServletRequest,pageNum,pageSize));
@@ -34,7 +33,7 @@ public class OrderController {
                                @RequestParam("page") Integer pageNum, @RequestParam("pageSize") Integer pageSize , Long number, String beginTime, String endTime){
         return R.success(orderService.getAllOrderList(httpServletRequest,pageNum,pageSize, number,  beginTime, endTime));
     }
-    /**/
+
     @PutMapping("/edit")
     public R<String> update(@RequestBody BeanOrderStatus beanOrderStatus){
         orderService.update(beanOrderStatus);

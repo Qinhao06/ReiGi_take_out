@@ -23,7 +23,6 @@ public class CommonController {
 
     @PostMapping("/upload")
     public R<String> upload(MultipartFile file){
-
         return commonService.uploadFile(file);
     }
 
